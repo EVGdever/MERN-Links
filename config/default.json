@@ -1,0 +1,5 @@
+{
+  "port": 8080,
+  "jwtSecret": "lolkek36",
+  "mongoUri": "mongodb+srv://mernevgdever:vovifu25@mern-qsmhv.azure.mongodb.net/app?retryWrites=true&w=majority"
+}
