@@ -5,13 +5,14 @@ import 'materialize-css';
 
 function App() {
     const routes = useRoutes(false);
-  return (
+
+    return (
       <Router>
           <div className="container">
              {routes}
           </div>
       </Router>
-  );
+    );
 }
 
 export default App;
