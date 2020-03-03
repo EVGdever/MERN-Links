@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {check, validationResult} = require('express-validator');
 const User = require('../models/User');
-const config = require('../config/default');
+const config = require('config');
 const router = Router();
 
 // /api/auth/register
@@ -84,7 +84,7 @@ router.post(
             res.status(201).json({token, userId: user.id});
 
         } catch (e) {
-            res.status(500).json({ message: 'не удалось зарегестрировать пользователя' });
+            res.status(500).json({ message: e.message });
         }
 });
 
