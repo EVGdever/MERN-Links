@@ -7,6 +7,11 @@ export const useHttp = () => {
     const request = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
         setLoading(true);
         try {
+            if (body) {
+                body = JSON.stringify(body);
+                headers['Content-type'] = 'application/json';
+            }
+
             const response = await fetch(url, {method, body, headers});
             const data = response.json();
 
@@ -24,7 +29,7 @@ export const useHttp = () => {
         }
     }, []);
 
-    const clearError = () => setError(null);
+    const clearError = useCallback(() => setError(null),[]);
 
     return ({ loading, request, error, clearError });
 };

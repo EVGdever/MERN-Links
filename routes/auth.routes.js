@@ -28,19 +28,19 @@ router.post(
         const {email, password} = req.body;
 
         const person = await User.findOne({ email });
-        if (rerson) {
+        if (person) {
             return res.status(400).json({ message: 'Такой пользователь уже существует' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const user = new User({email, hashedPassword});
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({email, password: hashedPassword});
 
         await user.save();
 
         res.status(201).json({ message: 'пользователь создан' });
 
     } catch (e) {
-        res.status(500).json({ message: 'не удалось зарегестрировать пользователя' });
+        res.status(500).json({ message: e.message });
     }
 });
 
