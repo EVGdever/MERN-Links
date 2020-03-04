@@ -21,7 +21,7 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 errors: errors.array(),
-                message: 'Неккоректные данные для регистрации'
+                message: 'Не коректные данные для регистрации'
             });
         }
 
@@ -40,7 +40,7 @@ router.post(
         res.status(201).json({ message: 'пользователь создан' });
 
     } catch (e) {
-        res.status(500).json({ message: e.message });
+        res.status(500).json({ message: 'ошибка при попытке регистрации' });
     }
 });
 
@@ -84,7 +84,7 @@ router.post(
             res.status(201).json({token, userId: user.id});
 
         } catch (e) {
-            res.status(500).json({ message: e.message });
+            res.status(500).json({ message: 'ошибка при попытке авторизации' });
         }
 });
 
