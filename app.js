@@ -11,6 +11,10 @@ app.use('/t', require('./routes/redirect.routes'));
 
 const APP_PORT = config.get('port') || 5000;
 
+/**
+ * This is start function
+ * @returns {Promise<void>}
+ */
 async function start() {
     try {
         await mongoose.connect(config.get('mongoUri'),{

@@ -7,7 +7,8 @@
     "start": "node app.js",
     "server": "nodemon app.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "doc-generate": "jsdoc ./**/*.js"
   },
   "keywords": [
     "mongoDB",
@@ -22,6 +23,7 @@
     "config": "^3.3.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
+    "jsdoc": "^3.6.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.2",
     "shortid": "^2.2.15"
