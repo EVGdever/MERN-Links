@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> App.js</title>
+  <title> pages/CreatePage.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -90,7 +90,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>App.js</h1>
+                    <h1>pages/CreatePage.jsx</h1>
                 </header>
                 
 
@@ -99,48 +99,64 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {AuthContext} from "./context/AuthContext";
-import {useRoutes} from "./router";
-import {useAuth} from "./hooks/auth.hook";
-import {Navbar} from "./components/Navbar";
-
-import 'materialize-css';
-import {Loader} from "./components/Loader";
+            <pre class="prettyprint source linenums"><code>import React, {useContext, useState} from "react";
+import {useHistory} from 'react-router-dom';
+import {useHttp} from "../hooks/http.hook";
+import {AuthContext} from "../context/AuthContext";
+import {useMessage} from "../hooks/message.hook";
 
 /**
- * It is a component application
- * @component
+ * this is page for generate new short link
+ * @return {JSX}
+ * @constructor
  */
-function App() {
-    const {token, login, logout, userId, ready} = useAuth();
-    const isAuthenticated = !!token;
-    const routes = useRoutes(isAuthenticated);
+export const CreatePage = () => {
+    const history = useHistory();
+    const auth = useContext(AuthContext);
+    const message = useMessage();
+    const {request} = useHttp();
+    const [link, setLink] = useState('');
 
-    if (!ready) {
-        return &lt;Loader />
-    }
+    /**
+     * this function make request to server for generate short link
+     * @param {KeyboardEvent} event
+     * @returns {Promise&lt;void>}
+     */
+    const pressHandler = async event => {
+        if (event.key === 'Enter') {
+            try {
+                const data = await request('/api/link/generate', 'POST', {from: link}, {
+                    authorization: `Bearer ${auth.token}`
+                });
+                console.log(data);
+                if (data.error) {
+                    message(data.message);
+                }
+                history.push(`/detail/${data.link._id}`);
+            }
+            catch (e) {}
+        }
+    };
 
     return (
-        &lt;AuthContext.Provider value={{
-            token,
-            login,
-            logout,
-            userId,
-            isAuthenticated
-        }}>
-          &lt;Router>
-              { isAuthenticated &amp;&amp; &lt;Navbar/>}
-              &lt;div className="container">
-                 {routes}
-              &lt;/div>
-          &lt;/Router>
-        &lt;/AuthContext.Provider>
-    );
-}
-
-export default App;
+        &lt;div>
+            &lt;div className="row">
+                &lt;div className="col s8 offset-s2" style={{paddingTop: '2rem'}}>
+                    &lt;div className="input-field">
+                        &lt;input
+                            placeholder="Вставьте ссылку"
+                            id="link"
+                            type="text"
+                            onChange={e => setLink(e.target.value)}
+                            onKeyPress={pressHandler}
+                        />
+                        &lt;label htmlFor="link">Введите ссылку&lt;/label>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    )
+};
 </code></pre>
         </article>
     </section>
