@@ -38,7 +38,7 @@ export const AuthPage = () => {
      * this is async function send request to server for register user and post data
      * @example
      * data = {
-     *     password: PaSsWoRd123123,
+     *     password: PassWoRd123123,
      *     email: example@gmail.com,
      * }
      */
