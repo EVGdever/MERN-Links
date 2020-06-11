@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> App.js</title>
+  <title> pages/LinksPage.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -90,7 +90,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>App.js</h1>
+                    <h1>pages/LinksPage.jsx</h1>
                 </header>
                 
 
@@ -99,48 +99,45 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {AuthContext} from "./context/AuthContext";
-import {useRoutes} from "./router";
-import {useAuth} from "./hooks/auth.hook";
-import {Navbar} from "./components/Navbar";
-
-import 'materialize-css';
-import {Loader} from "./components/Loader";
+            <pre class="prettyprint source linenums"><code>import React, {useCallback, useContext, useEffect, useState} from "react";
+import {useHttp} from "../hooks/http.hook";
+import {AuthContext} from "../context/AuthContext";
+import {Loader} from "../components/Loader";
+import {LinkList} from "../components/LinksList";
 
 /**
- * It is a component application
- * @component
+ * this is page for display list of links
+ * @return {JSX}
+ * @constructor
  */
-function App() {
-    const {token, login, logout, userId, ready} = useAuth();
-    const isAuthenticated = !!token;
-    const routes = useRoutes(isAuthenticated);
+export const LinksPage = () => {
+    const {request, loading} = useHttp();
+    const {token} = useContext(AuthContext);
+    const [links, setLinks] = useState([]);
 
-    if (!ready) {
+    const fetchLinks = useCallback(async () => {
+        try {
+            const fetched = await request(`/api/link`, 'GET', null, {
+                Authorization: `Bearer ${token}`
+            });
+            setLinks(fetched);
+        } catch (e) {}
+    }, [token, request]);
+
+    useEffect(() => {
+        fetchLinks();
+    }, [fetchLinks]);
+
+    if (loading) {
         return &lt;Loader />
     }
 
     return (
-        &lt;AuthContext.Provider value={{
-            token,
-            login,
-            logout,
-            userId,
-            isAuthenticated
-        }}>
-          &lt;Router>
-              { isAuthenticated &amp;&amp; &lt;Navbar/>}
-              &lt;div className="container">
-                 {routes}
-              &lt;/div>
-          &lt;/Router>
-        &lt;/AuthContext.Provider>
-    );
-}
-
-export default App;
+        &lt;>
+            {!loading &amp;&amp; &lt;LinkList links={links}/> }
+        &lt;/>
+    )
+};
 </code></pre>
         </article>
     </section>

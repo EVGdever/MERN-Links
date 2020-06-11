@@ -9,9 +9,6 @@ router.post('/generate', auth, async (req, res) => {
     try {
         const baseUrl = config.get('baseUrl');
         const {from} = req.body;
-        if (!(from.indexOf('http://') > 0) || !(from.indexOf('https://') > 0) || !(from.indexOf('.com') > 0)) {
-            res.status(500).json({ message: 'не корректная ссылка', error: true });
-        }
         const code = shortId.generate();
         const existing = await Link.findOne({ from });
 
