@@ -3,6 +3,11 @@ import {AuthContext} from "../context/AuthContext";
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 
+/**
+ * this is page for authentication user
+ * @return {JSX}
+ * @constructor
+ */
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
     const message = useMessage();
@@ -21,10 +26,22 @@ export const AuthPage = () => {
        window.M.updateTextFields();
     });
 
+    /**
+     * this function set value of input to state
+     * @param {KeyboardEvent} event
+     */
     const changeHandler = event => {
         setForm({ ...form, [event.target.name]: event.target.value })
     };
 
+    /**
+     * this is async function send request to server for register user and post data
+     * @example
+     * data = {
+     *     password: PassWoRd123123,
+     *     email: example@gmail.com,
+     * }
+     */
     const registerHandler = async () => {
         try {
             const data = await request('/api/auth/register', 'POST', {...form});
@@ -32,7 +49,17 @@ export const AuthPage = () => {
         } catch (e) {}
     };
 
-    const loginHandler = async () => {
+    /**
+     * this is async function send request to server for register user and post data
+     * @param {Object} formDate this date will be get from form's inputs
+     * @return {loginData}
+     * @example
+     * request{
+     *     password: PaSsWoRd123123,
+     *     email: example@gmail.com,
+     * }
+     */
+    const loginHandler = async (formDate) => {
         try {
             const data = await request('/api/auth/login', 'POST', {...form});
             auth.login(data.token, data.userId);
@@ -97,3 +124,9 @@ export const AuthPage = () => {
         </div>
     )
 };
+
+/**
+ * @typedef {Object} loginData
+ * @property {string} jwtToken
+ * @property {number} userId
+ */

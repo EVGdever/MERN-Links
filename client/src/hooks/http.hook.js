@@ -1,5 +1,9 @@
 import {useState, useCallback} from 'react';
 
+/**
+ * this is my http custom hook for fetching request
+ * @return {Object}
+ */
 export const useHttp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

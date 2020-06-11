@@ -4,6 +4,11 @@ import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/Loader";
 import {LinkList} from "../components/LinksList";
 
+/**
+ * this is page for display list of links
+ * @return {JSX}
+ * @constructor
+ */
 export const LinksPage = () => {
     const {request, loading} = useHttp();
     const {token} = useContext(AuthContext);
