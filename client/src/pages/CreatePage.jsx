@@ -2,13 +2,25 @@ import React, {useContext, useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
+import {useMessage} from "../hooks/message.hook";
 
+/**
+ * this is page for generate new short link
+ * @return {JSX}
+ * @constructor
+ */
 export const CreatePage = () => {
     const history = useHistory();
     const auth = useContext(AuthContext);
+    const message = useMessage();
     const {request} = useHttp();
     const [link, setLink] = useState('');
 
+    /**
+     * this function make request to server for generate short link
+     * @param {KeyboardEvent} event
+     * @returns {Promise<void>}
+     */
     const pressHandler = async event => {
         if (event.key === 'Enter') {
             try {
@@ -16,6 +28,9 @@ export const CreatePage = () => {
                     authorization: `Bearer ${auth.token}`
                 });
                 console.log(data);
+                if (data.error) {
+                    message(data.message);
+                }
                 history.push(`/detail/${data.link._id}`);
             }
             catch (e) {}

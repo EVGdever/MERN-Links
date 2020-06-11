@@ -8,6 +8,10 @@ import {Navbar} from "./components/Navbar";
 import 'materialize-css';
 import {Loader} from "./components/Loader";
 
+/**
+ * It is a component application
+ * @component
+ */
 function App() {
     const {token, login, logout, userId, ready} = useAuth();
     const isAuthenticated = !!token;

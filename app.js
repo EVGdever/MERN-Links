@@ -9,12 +9,17 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/link', require('./routes/link.routes'));
 app.use('/t', require('./routes/redirect.routes'));
 
-const APP_PORT = config.get('port') || 5000;
+const APP_PORT = config.get('port') || 6000;
+
 
 /**
- * This is start function
- * @returns {Promise<void>}
+ * @param {number} number
+ * @return {number}
  */
+function exemple(number) {
+    return number*2;
+}
+
 async function start() {
     try {
         await mongoose.connect(config.get('mongoUri'),{
